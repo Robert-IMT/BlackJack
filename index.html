@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>WorkHome :: BlackJack</title>
+	<link href="css/style.css" type="text/css" rel="stylesheet">
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+</head>
+
+<body>
+
+    <div id="popup" class="first">
+        <form>
+            <div class="logo"></div>
+            <div class="form">
+                <p>
+                    <label for="numberdecks">Enter the number of decks:</label>
+                </p>
+                <p>
+                    <span>
+                        <input id="decks1" type="radio" name="numberdecks" value="1" checked>
+                        <label for="decks1">1 decks</label>
+                    </span>
+                    <span>
+                        <input id="decks2" type="radio" name="numberdecks" value="2">
+                        <label for="decks2">2 decks</label>
+                    </span>
+                    <span>
+                        <input id="decks3" type="radio" name="numberdecks" value="3">
+                        <label for="decks3">3 decks</label>
+                    </span>
+                    <span>
+                        <input id="decks4" type="radio" name="numberdecks" value="4">
+                        <label for="decks4">4 decks</label>
+                    </span>
+                    <span>
+                        <input id="decks5" type="radio" name="numberdecks" value="5">
+                        <label for="decks5">5 decks</label>
+                    </span>
+                    <span>
+                        <input id="decks6" type="radio" name="numberdecks" value="6">
+                        <label for="decks6">6 decks</label>
+                    </span>
+                </p>
+                <p>
+                    <label for="numberplaer">Enter the number of players:</label>
+                </p>
+                <p>
+                    <span>
+                        <input id="plaers1" type="radio" name="numberplaer" value="1" checked>
+                        <label for="plaers1">1 plaers</label>
+                    </span>
+                    <span>
+                        <input id="plaers2" type="radio" name="numberplaer" value="2">
+                        <label for="plaers2">2 plaers</label>
+                    </span>
+                    <span>
+                        <input id="plaers3" type="radio" name="numberplaer" value="3">
+                        <label for="plaers3">3 plaers</label>
+                    </span>
+                    <span>
+                        <input id="plaers4" type="radio" name="numberplaer" value="4">
+                        <label for="plaers4">4 plaers</label>
+                    </span>
+                    <span>
+                        <input id="plaers5" type="radio" name="numberplaer" value="5">
+                        <label for="plaers5">5 plaers</label>
+                    </span>
+                    <span>
+                        <input id="plaers6" type="radio" name="numberplaer" value="6">
+                        <label for="plaers6">6 plaers</label>
+                    </span>
+                    <span>
+                        <input id="plaers7" type="radio" name="numberplaer" value="7">
+                        <label for="plaers7">7 plaers</label>
+                    </span>
+                </p>
+                <input type="submit" value="OK">
+                <button>CANCEL</button>
+            </div>
+        </form>
+    </div>
+
+    <div id="dealer">
+        <div id="bump">Disсard Tray</div>
+        <div id="croupie">
+            <span class="player">Crupie</span>
+            <div id="croupie_desk"></div>
+        </div>
+        <div id="decks">Shoe</div>
+    </div>
+
+    <div id="info">
+        <p>
+            <span><b>0</b> Cards in the game</span>
+            <span><b>0</b> Players in the game</span>
+            <span><b>0</b> Betting in play</span>
+        </p>
+        <p>
+            <span><strong>BlackJack Pays 3 to 2</strong></span>
+            <span><i>Dealer Must Draw 16 and Stand on all 17's</i></span>
+            <span><strong>Insurance Pays 2 to 1</strong></span>
+        </p>
+    </div>
+
+    <div id="player">
+        <div id="player_1" style="opacity:0.3">
+            <div class="insurance" style="visibility:hidden;">insurance</div>
+            <div class="bett"></div>
+            <span class="player">
+                <b>Desk I</b>
+                <i>Points: <strong>0</strong></i>
+                <i>Bet: $<strong>0</strong></i>
+                <i>Balance: $<strong>100</strong></i>
+            </span>
+            <div class="player_desk"></div>
+        </div>
+        <div id="player_2" style="opacity:0.3">
+            <div class="insurance" style="visibility:hidden;">insurance</div>
+            <div class="bett"></div>
+            <span class="player">
+                <b>Desk II</b>
+                <i>Points: <strong>0</strong></i>
+                <i>Bet: $<strong>0</strong></i>
+                <i>Balance: $<strong>100</strong></i>
+            </span>
+            <div class="player_desk"></div>
+        </div>
+        <div id="player_3" style="opacity:0.3">
+            <div class="insurance" style="visibility:hidden;">insurance</div>
+            <div class="bett"></div>
+            <span class="player">
+                <b>Desk III</b>
+                <i>Points: <strong>0</strong></i>
+                <i>Bet: $<strong>0</strong></i>
+                <i>Balance: $<strong>100</strong></i>
+            </span>
+            <div class="player_desk"></div>
+        </div>
+        <div id="player_4" style="opacity:0.3">
+            <div class="insurance" style="visibility:hidden;">insurance</div>
+            <div class="bett"></div>
+            <span class="player">
+                <b>Desk IV</b>
+                <i>Points: <strong>0</strong></i>
+                <i>Bet: $<strong>0</strong></i>
+                <i>Balance: $<strong>100</strong></i>
+            </span>
+            <div class="player_desk"></div>
+        </div>
+        <div id="player_5" style="opacity:0.3">
+            <div class="insurance" style="visibility:hidden;">insurance</div>
+            <div class="bett"></div>
+            <span class="player">
+                <b>Desk V</b>
+                <i>Points: <strong>0</strong></i>
+                <i>Bet: $<strong>0</strong></i>
+                <i>Balance: $<strong>100</strong></i>
+            </span>
+            <div class="player_desk"></div>
+        </div>
+        <div id="player_6" style="opacity:0.3">
+            <div class="insurance" style="visibility:hidden;">insurance</div>
+            <div class="bett"></div>
+            <span class="player">
+                <b>Desk VI</b>
+                <i>Points: <strong>0</strong></i>
+                <i>Bet: $<strong>0</strong></i>
+                <i>Balance: $<strong>100</strong></i>
+            </span>
+            <div class="player_desk"></div>
+        </div>
+        <div id="player_7" style="opacity:0.3">
+            <div class="insurance" style="visibility:hidden;">insurance</div>
+            <div class="bett"></div>
+            <span class="player">
+                <b>Desk VII</b>
+                <i>Points: <strong>0</strong></i>
+                <i>Bet: $<strong>0</strong></i>
+                <i>Balance: $<strong>100</strong></i>
+            </span>
+            <div class="player_desk"></div>
+        </div>
+    </div>
+
+</body>
+<script type="text/javascript" src="js/02-23-2016_no_2.js"></script>
+</html>

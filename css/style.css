@@ -1,0 +1,368 @@
+/**
+ * Black Jack
+ */
+
+* {
+	/* outline: 1px dotted red;
+	 */}
+html,
+body {
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	font-family: sans-serif;
+	background: #00AE14;
+}
+body {
+	font-family: sans-serif;
+	color: #007314;
+	text-align: center;
+	text-transform: uppercase;
+}
+body > div {
+	padding: 20px;
+	width: 1024px;
+	margin: auto;
+	text-align: center;
+}
+:focus {
+	outline: 0;
+}
+#popup {
+	width: 100%;
+	position: fixed;
+	height: 100%;
+	z-index: 10000;
+	background-color: rgba(0,0,0,.5);
+	padding: 0;
+}
+#popup.first {
+}
+#game_over,
+#popup form {
+	padding: 20px;
+	border-radius: 20px;
+	margin: auto;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	display: inline-block;
+}
+#game_over {
+	background: #24750A;
+	width: 200px;
+	color: #00AE14;
+	font-size: 21px;
+	font-weight: bold;
+	border: 1px solid #00AE14;
+	box-shadow: 0 0 20px rgba(0,0,0,.5), inset 0 0 0 3px #00AE14;
+	height: 0px;
+	line-height: 0px;
+}
+#popup form {
+	box-shadow: 0 0 20px rgba(0,0,0,.5), inset 0 0 0 3px #24750A;
+	background: #00AE14;
+	border: 1px solid #24750A;
+	width: 500px;
+	height: 200px;
+}
+#popup form > div {
+	display: inline-block;
+}
+.logo {
+	margin-right: 20px;
+	width: 128px;
+	height: 189px;
+	background: #00AE14 url('../image/card.png') no-repeat -370px -742px;
+}
+.form {
+	width: 343px;
+}
+.form p {
+	margin: 0 0 14px;
+	font-size: 14px;
+}
+.form p:nth-child(even) {
+	text-align: left;
+}
+.form p.text {
+	text-align: center;
+}
+.form p.text:before {
+	content: '$';
+	font-size: 33px;
+	background: #007314;
+	color: #00AE14;
+	display: inline-block;
+	line-height: 48px;
+	border-bottom-left-radius: 10px;
+	border-top-left-radius: 10px;
+	padding-left: 15px;
+}
+.form p > label {
+	display: block;
+	font-weight: bold;
+	padding-bottom: 4px;
+	border-bottom: 2px solid #24750A;
+	margin-bottom: 4px;
+}
+.form p > span {
+	width: 82px;
+	display: inline-block;
+	font-size: 12px;
+	text-transform: capitalize;
+}
+.form p:first-of-type > span {
+	width: 100%;
+	text-align: right;
+	margin-bottom: 20px;
+	font-size: 10px;
+	font-weight: bold;
+	text-transform: uppercase;
+}
+.form p:first-of-type > span i {
+	font-style: normal;
+	font-size: 20px;
+	padding: 5px;
+}
+input[type="text"] {
+	width: 80px;
+	background: #00AE14;
+	color: #007314;
+	text-align: center;
+	font-size: 33px;
+	font-weight: bold;
+	margin: 14px auto;
+	padding: 1px 15px;
+	border-bottom-right-radius: 10px;
+	border-top-right-radius: 10px;
+	border: 4px solid #007314;
+}
+input[type="text"]:focus,
+input[type="text"]:visited {
+	text-decoration: underline;
+}
+input[type="radio"] {
+    display:none;
+}
+input[type="radio"]+label {
+  cursor: pointer;
+}
+input[type="radio"]+label::before {
+    content: "";
+    display: inline-block;
+    height: 10px;
+    width: 10px;
+    margin: 0 5px 0 0;
+    border: 2px solid #007314;
+    border-radius: 50%;
+    position: relative;
+    top: 2px;
+}
+input[type="radio"]:checked+label::before {
+	background-color: #007314;
+	box-shadow: inset 0 0 0 2px #00AE14;
+}
+.form input[type="submit"],
+.form button {
+	width: 109px;
+	margin: 0 20px;
+	background: #007314;
+	color: #37A714;
+	border: 0;
+	font-size: 16px;
+	padding: 5px 10px;
+	border-radius: 14px;
+	font-weight: bold;
+	cursor: pointer;
+}
+.form input[type="submit"] {
+}
+.form button {
+}
+#info {
+	clear: both;
+}
+#info p:last-child {
+}
+#info span {
+	margin: 0 26px;
+	font-size: 12px;
+}
+#info b {
+	font-size: 24px;
+	width: 50px;
+	display: inline-block;
+	text-align: right;
+}
+#info p:first-child span:last-child b:before {
+	content: '$';
+	font-weight: normal;
+	font-size: 12px;
+}
+#info strong {
+	font-size: 16px;
+	background: #007314;
+	color: #37A714;
+	padding: 5px 10px;
+	border-radius: 14px;
+}
+#info i {
+	font-style: normal;
+	letter-spacing: 2px;
+}
+.player {
+	border-radius: 50%;
+	display: inline-block;
+}
+.insurance {
+	position: absolute;
+	width: 100%;
+	background-color: #007314;
+	color: #00AE14;
+	text-transform: lowercase;
+	border-radius: 9px;
+	top: -28px;
+}
+.bett {
+	position: absolute;
+	bottom: 100%;
+	width: 100%;
+}
+.bett > span {
+	width: 33px;
+	height: 55px;
+	display: inline-block;
+}
+.bett > span > span {
+	background-image: url('../image/card.png');
+	background-repeat: no-repeat;
+	background-position-y: -864px;
+	box-shadow: 2px 2px 2px rgba(0,0,0,0.3), inset 1px 1px 0px rgba(255,255,255,0.4), inset -1px -1px 1px rgba(0,0,0,0.6);
+	border-radius: 50%;
+	overflow: hidden;
+	width: 56px;
+	height: 56px;
+	display: inline-block;
+	margin-left: -12px;
+}
+.bett_1 {
+	background-position-x: -521px;
+}
+.bett_2 {
+	background-position-x: -576px;
+}
+.bett_5 {
+	background-position-x: -631px;
+}
+.bett_10 {
+	background-position-x: -687px;
+}
+.bett_25 {
+	background-position-x: -742px;
+}
+#dealer {
+	width: 828px;
+	margin-bottom: 27px;
+}
+#dealer .player {
+	width: 122px;
+	height: 122px;
+	display: table-cell;
+	vertical-align: middle;
+	font-weight: bold;
+}
+#dealer > div {
+	display: inline-block;
+	box-shadow: inset 0 0 0 3px #24750A;
+	border: 1px solid #24750A;
+	letter-spacing: -1px;
+	line-height: 36px;
+	position: relative;
+}
+#bump,
+#decks {
+	border-radius: 10px;
+	height: 191px;
+	background: #00AE14 url('../image/card.png') no-repeat -370px -741px;
+	width: 130px;
+}
+#bump {
+	float: left;
+}
+#bump.full {
+	background: #24750A url('../image/card.png') no-repeat -247px -741px;
+	box-shadow: 2px 2px 4px rgba(18, 64, 3, 0.5), inset 1px 1px 0 rgba(255,255,255,.5), inset -1px -1px 0 rgba(0,0,0,.5);
+}
+#decks {
+	float: right;
+}
+#decks span {
+	background: #24750A url('../image/card.png') no-repeat -247px -741px;
+	display: inline-block;
+	width: 122px;
+	height: 183px;
+	position: absolute;
+	border-radius: 5px;
+	border-top: 1px solid rgba(255,255,255,.5);
+	border-left: 1px solid rgba(255,255,255,.3);
+	margin: 4px 3px;
+	top: -230px;
+	left: 25px;
+}
+#decks span:first-child {
+	box-shadow: 8px 8px 8px 6px rgba(18, 64, 3, 0.5), -1px -1px 3px rgba(18, 64, 3, 0.5);
+}
+#decks span:last-child {
+	box-shadow: inset 1px 1px 0 rgba(255,255,255,.5), inset -1px -1px 2px rgba(0,0,0,.2);
+}
+#croupie {
+	width: 122px;
+	border-radius: 50%;
+	color: #007314;
+	height: 122px;
+	display: inline-table;
+	margin-bottom: 66px;
+	position: relative;
+}
+#croupie_desk {
+	position: absolute;
+	width: 500px;
+	top: 60%;
+	left: calc( 50% - 250px );
+	right: 0;
+	margin: auto;
+}
+#player {
+	width: 1240px;
+	padding: 40px 0;
+}
+#player > div {
+	display: inline-table;
+	margin: 18px;
+	position: relative;
+}
+#player .player {
+	display: table-cell;
+	vertical-align: middle;
+	width: 133px;
+	height: 132px;
+	box-shadow: inset 0 0 0 3px #24750A;
+	border: 1px solid #24750A;
+}
+#player .player i {
+	font-size: 12px;
+	display: block;
+	font-style: normal;
+}
+#player .player i strong {
+	font-size: 16px;
+}
+#player .player_desk {
+	position: absolute;
+	width: 170px;
+	left: calc( 50% - 85px );
+	top: 78%;
+}
