@@ -3,8 +3,8 @@
  */
 
 * {
-	/* outline: 1px dotted red;
-	 */}
+	/* outline: 1px dotted red; */
+}
 html,
 body {
 	height: 100%;
@@ -35,8 +35,6 @@ body > div {
 	z-index: 10000;
 	background-color: rgba(0,0,0,.5);
 	padding: 0;
-}
-#popup.first {
 }
 #game_over,
 #popup form {
@@ -178,15 +176,12 @@ input[type="radio"]:checked+label::before {
 	font-weight: bold;
 	cursor: pointer;
 }
-.form input[type="submit"] {
-}
-.form button {
-}
+.form input[type="submit"] {}
+.form button {}
 #info {
 	clear: both;
 }
-#info p:last-child {
-}
+#info p:last-child {}
 #info span {
 	margin: 0 26px;
 	font-size: 12px;
@@ -269,10 +264,17 @@ input[type="radio"]:checked+label::before {
 }
 #dealer .player {
 	width: 122px;
-	height: 122px;
+	height: 90px;
 	display: table-cell;
 	vertical-align: middle;
 	font-weight: bold;
+}
+#dealer .player i {
+	font-weight: normal;
+	letter-spacing: normal;
+	line-height: 0px;
+}
+#dealer .player i strong {
 }
 #dealer > div {
 	display: inline-block;
@@ -335,34 +337,235 @@ input[type="radio"]:checked+label::before {
 	right: 0;
 	margin: auto;
 }
+#croupie_desk > div,
+.player_desk > div {
+	display: inline-block;
+	height: 30px;
+	position: relative;
+	width: 12%;
+	min-width: 61.5px;
+}
+.player_desk > div {
+	width: 30%;
+	min-width: 22px;
+}
+.player_desk > div .card {
+	left: calc( -65px + 100%/2 );
+}
 #player {
-	width: 1240px;
 	padding: 40px 0;
+	width: 1140px;
 }
 #player > div {
 	display: inline-table;
-	margin: 18px;
+	margin: 18px 8px;
 	position: relative;
 }
 #player .player {
 	display: table-cell;
 	vertical-align: middle;
-	width: 133px;
+	width: 132px;
 	height: 132px;
 	box-shadow: inset 0 0 0 3px #24750A;
 	border: 1px solid #24750A;
 }
+#dealer .player i,
 #player .player i {
 	font-size: 12px;
 	display: block;
 	font-style: normal;
 }
+#dealer .player i strong,
 #player .player i strong {
 	font-size: 16px;
 }
 #player .player_desk {
 	position: absolute;
-	width: 170px;
 	left: calc( 50% - 85px );
 	top: 78%;
+	width: 70px;
+	padding: 0 50px;
+}
+
+/**
+ * CARD CLASS
+ */
+.card {
+	background-image: url('../image/card.png');
+	background-repeat: no-repeat;
+	border-radius: 5px;
+	border-top: 1px solid rgba(255,255,255,.5);
+	border-left: 1px solid rgba(255,255,255,.3);
+	height: 183px;
+	width: 122px;
+	display: inline-block;
+	position: absolute;
+	top: 0;
+	left: -51%;
+	box-shadow: 4px 4px 6px rgba(18, 64, 3, 0.2), 1px 1px 3px 1px rgba(18, 64, 3, 0.3), -1px -1px 6px rgba(18, 64, 3, 0.15);
+	border: 1px solid rgba(144,144,144,0.3);
+}
+.card:hover {
+}
+.card.joker_0 {
+	background-position: -4px -741px;
+}
+.card.joker_1 {
+	background-position: -123px -739px;
+}
+.card.hearts_2 {
+	background-position: 0px 0px;
+}
+.card.diamonds_2 {
+	background-position: 0px -184px;
+}
+.card.clubs_2 {
+	background-position: 0px -370px;
+}
+.card.spades_2 {
+	background-position: 0px -557px;
+}
+.card.hearts_3 {
+	background-position: -123px 0px;
+}
+.card.diamonds_3 {
+	background-position: -123px -184px;
+}
+.card.clubs_3 {
+	background-position: -123px -370px;
+}
+.card.spades_3 {
+	background-position: -123px -557px;
+}
+.card.hearts_4 {
+	background-position: -245px 0px;
+}
+.card.diamonds_4 {
+	background-position: -245px -184px;
+}
+.card.clubs_4 {
+	background-position: -245px -370px;
+}
+.card.spades_4 {
+	background-position: -245px -557px;
+}
+.card.hearts_5 {
+	background-position: -371px 0px;
+}
+.card.diamonds_5 {
+	background-position: -371px -184px;
+}
+.card.clubs_5 {
+	background-position: -371px -370px;
+}
+.card.spades_5 {
+	background-position: -371px -557px;
+}
+.card.hearts_6 {
+	background-position: -491px 0px;
+}
+.card.diamonds_6 {
+	background-position: -491px -184px;
+}
+.card.clubs_6 {
+	background-position: -491px -370px;
+}
+.card.spades_6 {
+	background-position: -491px -557px;
+}
+.card.hearts_7 {
+	background-position: -617px 0px;
+}
+.card.diamonds_7 {
+	background-position: -617px -184px;
+}
+.card.clubs_7 {
+	background-position: -617px -371px;
+}
+.card.spades_7 {
+	background-position: -617px -557px;
+}
+.card.hearts_8 {
+	background-position: -740px 0px;
+}
+.card.diamonds_8 {
+	background-position: -740px -184px;
+}
+.card.clubs_8 {
+	background-position: -740px -370px;
+}
+.card.spades_8 {
+	background-position: -740px -557px;
+}
+.card.hearts_9 {
+	background-position: -863px 0px;
+}
+.card.diamonds_9 {
+	background-position: -863px -184px;
+}
+.card.clubs_9 {
+	background-position: -863px -370px;
+}
+.card.spades_9 {
+	background-position: -863px -557px;
+}
+.card.hearts_10 {
+	background-position: -986px 0px;
+}
+.card.diamonds_10 {
+	background-position: -986px -184px;
+}
+.card.clubs_10 {
+	background-position: -986px -370px;
+}
+.card.spades_10 {
+	background-position: -986px -557px;
+}
+.card.hearts_J {
+	background-position: -1109px -1px;
+}
+.card.diamonds_J {
+	background-position: -1109px -184px;
+}
+.card.clubs_J {
+	background-position: -1109px -370px;
+}
+.card.spades_J {
+	background-position: -1109px -557px;
+}
+.card.hearts_Q {
+	background-position: -1231px -1px;
+}
+.card.diamonds_Q {
+	background-position: -1231px -184px;
+}
+.card.clubs_Q {
+	background-position: -1231px -370px;
+}
+.card.spades_Q {
+	background-position: -1231px -557px;
+}
+.card.hearts_K {
+	background-position: -1355px -1px;
+}
+.card.diamonds_K {
+	background-position: -1355px -184px;
+}
+.card.clubs_K {
+	background-position: -1355px -370px;
+}
+.card.spades_K {
+	background-position: -1355px -557px;
+}
+.card.hearts_A {
+	background-position: -1477px -1px;
+}
+.card.diamonds_A {
+	background-position: -1477px -184px;
+}
+.card.clubs_A {
+	background-position: -1477px -370px;
+}
+.card.spades_A {
+	background-position: -1477px -557px;
 }

@@ -26,10 +26,10 @@
      * @type {Array}
      */
      var cardsBase = {
-        'hearts'    : [2,3,4,5,6,7,8,9,10,'J','Q','K','A'],
-        'diamonds'  : [2,3,4,5,6,7,8,9,10,'J','Q','K','A'],
-        'clubs'     : [2,3,4,5,6,7,8,9,10,'J','Q','K','A'],
-        'spades'    : [2,3,4,5,6,7,8,9,10,'J','Q','K','A']
+        'hearts'    : [2,3,4,5,6,7,8,9,10,'J','Q','K','A'], // ♥
+        'diamonds'  : [2,3,4,5,6,7,8,9,10,'J','Q','K','A'], // ♦
+        'clubs'     : [2,3,4,5,6,7,8,9,10,'J','Q','K','A'], // ♣
+        'spades'    : [2,3,4,5,6,7,8,9,10,'J','Q','K','A']  // ♠
      };
 
     /** [cardDesk - game card deck]
@@ -142,6 +142,9 @@
                     if(this.playerBet >= this.balance && this.balance <= 25) {
                         $('#popup').find('input[name="numberbet"]').val(this.balance);
                         this.playerBet = this.balance;
+                    } else if(this.playerBet >= this.balance && this.balance >= 25) {
+                        $('#popup').find('input[name="numberbet"]').val(25);
+                        this.playerBet = 25;
                     } else if(this.playerBet >= 25 && this.playerBet <= this.balance) {
                         $('#popup').find('input[name="numberbet"]').val(25);
                         this.playerBet = 25;

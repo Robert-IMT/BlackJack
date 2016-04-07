@@ -9,7 +9,7 @@
 
 <body>
 
-    <div id="popup" class="first">
+    <div id="popup">
         <form>
             <div class="logo"></div>
             <div class="form">
@@ -84,8 +84,17 @@
     <div id="dealer">
         <div id="bump">Disсard Tray</div>
         <div id="croupie">
-            <span class="player">Crupie</span>
-            <div id="croupie_desk"></div>
+            <span class="player">
+                Crupie
+                <i>Points: <strong>0</strong></i>
+            </span>
+            <div id="croupie_desk" style="display:none;">
+                <div><span class="card diamonds_2"></span></div>
+                <div><span class="card clubs_4"></span></div>
+                <div><span class="card hearts_6"></span></div>
+                <div><span class="card spades_A"></span></div>
+                <div><span class="card hearts_J"></span></div>
+            </div>
         </div>
         <div id="decks">Shoe</div>
     </div>
@@ -146,7 +155,22 @@
                 <i>Bet: $<strong>0</strong></i>
                 <i>Balance: $<strong>100</strong></i>
             </span>
-            <div class="player_desk"></div>
+            <div class="player_desk">
+            </div>
+        </div>
+        <div id="player_4_1" style="opacity:0.3;display:none;">
+            <div class="insurance" style="visibility:hidden;">insurance</div>
+            <div class="bett"></div>
+            <span class="player">
+                <b>Desk IV/2</b>
+                <i>Points: <strong>0</strong></i>
+                <i>Bet: $<strong>0</strong></i>
+                <i>Balance: $<strong>100</strong></i>
+            </span>
+            <div class="player_desk">
+                <div><span class="card diamonds_A"></span></div>
+                <div><span class="card hearts_K"></span></div>
+            </div>
         </div>
         <div id="player_5" style="opacity:0.3">
             <div class="insurance" style="visibility:hidden;">insurance</div>
