@@ -20,7 +20,7 @@
     /** [numDecks - selection of the number of decks]
      * @type {Number}
      */
-     var numDecks;
+     var numDecks = 0;
 
     /** [cardsBase - base card deck]
      * @type {Array}
@@ -95,7 +95,7 @@
     /** [numPlayers - selection of the number of players]
      * @type {Number}
      */
-     var numPlayers;
+     var numPlayers = 0;
 
     /** [playerS - data players]
      * @type {Object}
@@ -261,7 +261,7 @@
          * @type {Function}
          */
          this.tableGenerate = function(countPlayers) {
-console.log(countPlayers);
+            console.log(countPlayers);
          };
      };
 
@@ -280,23 +280,20 @@ window.onload = function() {
 
         // first PopUp
         $('form').submit(function() {
-            numDecks = setupGame.gameContinue()[0];
-            numPlayers = setupGame.gameContinue()[1];
-console.log('1: ' + numPlayers);
+            if(numDecks === 0 && numPlayers === 0) {
+                numDecks = setupGame.gameContinue()[0];
+                numPlayers = setupGame.gameContinue()[1];
 
-            var newCardDesk = new cardDesk(numPlayers, numDecks);
-console.log('2: ' + numPlayers);
+                var newCardDesk = new cardDesk(numPlayers, numDecks);
+            }
 
             // second PopUp
             var newPlayerS = new playerS();
             newPlayerS.userBet();
-console.log('3: ' + numPlayers);
 
             $('form').submit(function() {
                 newCardDesk.addCartShoe();
                 newPlayerS.closeBetForm();
-console.log('4: ' + numPlayers);
-
                 setupGame.tableGenerate(numPlayers);
 
                 setupGame.animateInfo();
