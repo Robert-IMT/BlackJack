@@ -20,7 +20,7 @@
     /** [numDecks - selection of the number of decks]
      * @type {Number}
      */
-     var numDecks;
+     var numDecks = 0;
 
     /** [cardsBase - base card deck]
      * @type {Array}
@@ -95,7 +95,7 @@
     /** [numPlayers - selection of the number of players]
      * @type {Number}
      */
-     var numPlayers;
+     var numPlayers = 0;
 
     /** [playerS - data players]
      * @type {Object}
@@ -119,7 +119,6 @@
 
         /** [userBet - selecting the player's bet]
          * @type {Function}
-         * @return {Number} [current player's balance]
          */
          this.userBet = function() {
             event.preventDefault();
@@ -129,17 +128,42 @@
                 $('#popup').children('form').children('.form').prepend('<p><span>Your Balance:<i>$ ' + currentBalance + '</i></span><label for="numberbet">Enter Your Bet :</label></p><p class="text"><input type="text" name="numberbet" value="10"></p>');
                 $('#popup').children('form').children('.form').fadeIn('slow');
             }, 500);
-            return this.balance;
          };
 
-        /** [closeBetForm description]
+        /** [closeBetForm - processing the second form]
          * @type {Function}
          */
          this.closeBetForm = function() {
-                $('#popup').fadeOut('slow', 'linear');
-                this.balance -= $('#popup').find('input[name="numberbet"]').val();;
-            };
-     };
+            event.preventDefault();
+            $('#popup').fadeOut('slow', 'linear');
+            if(this.balance > 0) {
+                this.playerBet = $('#popup').find('input[name="numberbet"]').val();
+                if(!isNaN(this.playerBet)) {
+                    if(this.playerBet >= this.balance && this.balance <= 25) {
+                        $('#popup').find('input[name="numberbet"]').val(this.balance);
+                        this.playerBet = this.balance;
+                    } else if(this.playerBet >= 25 && this.playerBet <= this.balance) {
+                        $('#popup').find('input[name="numberbet"]').val(25);
+                        this.playerBet = 25;
+                    } else if(this.playerBet <= 0) {
+                        $('#popup').find('input[name="numberbet"]').val(1);
+                        this.playerBet = 1;
+                    }
+                } else {
+                    if(this.balance <= 25) {
+                        $('#popup').find('input[name="numberbet"]').val(this.balance);
+                        this.playerBet = this.balance;
+                    } else {
+                        $('#popup').find('input[name="numberbet"]').val(25);
+                        this.playerBet = 25;
+                    }
+                }
+                $('#info').children().eq(0).children().eq(2).children('b').text(this.playerBet);
+                this.balance -= this.playerBet;
+                return this.playerBet;
+            }
+         }
+     } // object playerS END
 
     /** [showsPlayersBet - it shows the player's bet (chips image)]
      * @type {Object}
@@ -208,12 +232,8 @@
 
     /** [gameTotalSetup - initial game settings]
      * @type {Object}
-     * @return {[type]} [description]
      */
      function gameTotalSetup() {
-
-        this.numDecks;
-        this.numPlayers;
 
         /** [gameOver - game end function]
          * @type {Function}
@@ -248,7 +268,7 @@
                 $(this).prop('Counter',0).animate({
                     Counter: $(this).text()
                 }, {
-                    duration: 4000,
+                    duration: $('#decks').children('span').length*135,
                     easing: 'swing',
                     step: function (now) {
                             $(this).text(Math.ceil(now));
@@ -257,18 +277,18 @@
                 });
          };
 
-        /** [tableGenerate description]
+        /** [tableGenerate - create value for info box]
          * @type {Function}
          */
          this.tableGenerate = function(countPlayers) {
-console.log(countPlayers);
+            $('#info').children().eq(0).children().eq(1).children('b').text(countPlayers);
          };
      };
 
 /** START GAME **/
 window.onload = function() {
 
-    /** OF EVENTS DESTINATION SECTION **/
+    /** SECTION DESTINATION OF EVENTS **/
 
         // game cancellation initialization
         var setupGame = new gameTotalSetup();
@@ -276,29 +296,29 @@ window.onload = function() {
             setupGame.gameOver();
         });
 
+    /** SECTION TOTAL OBJECT **/
+
+        var newPlayerS = new playerS();
+
     /** SELECTION OF THE PLAYING CONDITIONS **/
 
-        // first PopUp
+        // first step :: PopUp I
         $('form').submit(function() {
-            numDecks = setupGame.gameContinue()[0];
-            numPlayers = setupGame.gameContinue()[1];
-console.log('1: ' + numPlayers);
+            if(numDecks === 0 && numPlayers === 0) {
+                numDecks = setupGame.gameContinue()[0];
+                numPlayers = setupGame.gameContinue()[1];
 
-            var newCardDesk = new cardDesk(numPlayers, numDecks);
-console.log('2: ' + numPlayers);
+                var newCardDesk = new cardDesk(numPlayers, numDecks);
+            }
 
-            // second PopUp
-            var newPlayerS = new playerS();
+            // second step :: generated PopUp II
             newPlayerS.userBet();
-console.log('3: ' + numPlayers);
 
             $('form').submit(function() {
+                // generated info box
                 newCardDesk.addCartShoe();
-                newPlayerS.closeBetForm();
-console.log('4: ' + numPlayers);
-
                 setupGame.tableGenerate(numPlayers);
-
+                totalBet = newPlayerS.closeBetForm();
                 setupGame.animateInfo();
 
                 /**
