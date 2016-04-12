@@ -15,26 +15,6 @@
      */
      var canceled = '*** EXECUTION IS CANCELED ***';
 
-    /**
-     * [resourcesUrl - appointment of path to resources]
-     * @type {Object}
-     */
-     function resourcesUrl() {
-        this.url = window.location.href;
-        this.url =  this.url.slice(0,this.url.lastIndexOf('/'));
-
-        /**
-         * [imageUrl - generate correct SRC for image]
-         * @type {Function}
-         */
-         this.imageUrl = function() {
-            var u = this.url;
-            $('img').each(function(){
-                $(this).attr('src', u + $(this).attr('src'))
-            })
-         }
-     }
-
 /** CARD DECK **/
 
     /** [numDecks - selection of the number of decks]
@@ -91,14 +71,14 @@
         /** [addCartShoe - add visual card to shoe]
          * @type {Function}
          */
-         this.addCartShoe = function() {
+         this.addCartShoe = function(url) {
             var q = 10+Number(countCard)*2;
             while(--q > 0) {
-                $('#decks').append('<span></span>');
+                $('#decks').append('<img src="" />');
             };
             var spanInt = setInterval(function(){
-                if (q < $('#decks').children('span').length+1) {
-                    $('#decks').children('span').eq(q).addClass('card_'+q).animate({'left' : q+'px', 'top' : (q-q/2)+'px'});
+                if (q < $('#decks').children('img').length+1) {
+                    $('#decks').children('img').eq(q).attr('src', 'image/card_back.png').animate({'left' : q+'px', 'top' : (q-q/2)+'px'});
                     q++;
                 } else {
                     clearInterval(spanInt);
@@ -313,10 +293,6 @@ window.onload = function() {
 
     /** SECTION DESTINATION OF EVENTS **/
 
-        // reindex media resource
-        var hostUrl = new resourcesUrl();
-        hostUrl.imageUrl();
-
         // game cancellation initialization
         var setupGame = new gameTotalSetup();
         $('button').click(function() {
@@ -342,11 +318,17 @@ window.onload = function() {
             newPlayerS.userBet();
 
             $('form').submit(function() {
+
                 // generated info box
                 newCardDesk.addCartShoe();
                 setupGame.tableGenerate(numPlayers);
                 totalBet = newPlayerS.closeBetForm();
                 setupGame.animateInfo();
+
+                // generated palers table and betting
+
+
+
 
                 /**
                  * [bettPlayers - selection of the betting of players]
