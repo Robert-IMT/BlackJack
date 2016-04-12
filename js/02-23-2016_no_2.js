@@ -17,18 +17,22 @@
 
     /**
      * [resourcesUrl - appointment of path to resources]
-     * @type {String}
+     * @type {Object}
      */
      function resourcesUrl() {
         this.url = window.location.href;
         this.url =  this.url.slice(0,this.url.lastIndexOf('/'));
 
-        this.hostUrl = function() {
+        /**
+         * [imageUrl - generate correct SRC for image]
+         * @type {Function}
+         */
+         this.imageUrl = function() {
             var u = this.url;
             $('img').each(function(){
                 $(this).attr('src', u + $(this).attr('src'))
             })
-        }
+         }
      }
 
 /** CARD DECK **/
@@ -310,8 +314,8 @@ window.onload = function() {
     /** SECTION DESTINATION OF EVENTS **/
 
         // reindex media resource
-        var imageUrl = new resourcesUrl();
-        imageUrl.hostUrl();
+        var hostUrl = new resourcesUrl();
+        hostUrl.imageUrl();
 
         // game cancellation initialization
         var setupGame = new gameTotalSetup();
