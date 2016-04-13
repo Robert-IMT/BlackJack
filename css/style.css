@@ -73,7 +73,7 @@ body > div {
 	margin-right: 20px;
 	width: 128px;
 	height: 189px;
-	background: #00AE14 url('../image/card.png') no-repeat -370px -742px;
+	background: #00AE14 url('../image/card_sprite.png') no-repeat 4px 0px;
 }
 .form {
 	width: 343px;
@@ -87,6 +87,7 @@ body > div {
 }
 .form p.text {
 	text-align: center;
+	position: relative;
 }
 .form p.text:before {
 	content: '$';
@@ -99,6 +100,16 @@ body > div {
 	border-top-left-radius: 10px;
 	padding-left: 15px;
 }
+.form p.text span {
+	position: absolute;
+	font-size: 10px;
+	width: 87px;
+	right: 0;
+	background: #007314;
+	top: 15px;
+	color: #00AE14;
+	padding: 1px 0;
+}
 .form p > label {
 	display: block;
 	font-weight: bold;
@@ -106,11 +117,16 @@ body > div {
 	border-bottom: 2px solid #24750A;
 	margin-bottom: 4px;
 }
-.form p > span {
+.form p:not.text > span {
 	width: 82px;
 	display: inline-block;
 	font-size: 12px;
 	text-transform: capitalize;
+}
+.form p > span {
+	width: 82px;
+	display: inline-block;
+	font-size: 12px;
 }
 .form p:first-of-type > span {
 	width: 100%;
@@ -232,7 +248,6 @@ input[type="radio"]:checked+label::before {
 	display: inline-block;
 }
 .bett > span > span {
-	background-image: url('../image/card.png');
 	background-repeat: no-repeat;
 	background-position-y: -864px;
 	box-shadow: 2px 2px 2px rgba(0,0,0,0.3), inset 1px 1px 0px rgba(255,255,255,0.4), inset -1px -1px 1px rgba(0,0,0,0.6);
@@ -288,37 +303,46 @@ input[type="radio"]:checked+label::before {
 #decks {
 	border-radius: 10px;
 	height: 191px;
-	background: #00AE14 url('../image/card.png') no-repeat -370px -741px;
+	background: #00AE14 url('../image/card_sprite.png') no-repeat 3px 0px;
 	width: 130px;
 }
 #bump {
 	float: left;
 }
 #bump.full {
-	background: #24750A url('../image/card.png') no-repeat -247px -741px;
 	box-shadow: 2px 2px 4px rgba(18, 64, 3, 0.5), inset 1px 1px 0 rgba(255,255,255,.5), inset -1px -1px 0 rgba(0,0,0,.5);
 }
 #decks {
 	float: right;
 }
-#decks span {
-	background: #24750A url('../image/card.png') no-repeat -247px -741px;
+#decks > span {
 	display: inline-block;
 	width: 122px;
 	height: 183px;
 	position: absolute;
 	border-radius: 5px;
-	border-top: 1px solid rgba(255,255,255,.5);
-	border-left: 1px solid rgba(255,255,255,.3);
+	border-top: 1px solid rgb(255,255,255);
+	border-left: 1px solid rgba(255,255,255,.6);
 	margin: 4px 3px;
 	top: -230px;
 	left: 25px;
+	overflow: hidden;
 }
-#decks span:first-child {
+#decks > span:first-child {
 	box-shadow: 8px 8px 8px 6px rgba(18, 64, 3, 0.5), -1px -1px 3px rgba(18, 64, 3, 0.5);
 }
-#decks span:last-child {
-	box-shadow: inset 1px 1px 0 rgba(255,255,255,.5), inset -1px -1px 2px rgba(0,0,0,.2);
+#decks > span:last-child span {
+	box-shadow: inset 1px 1px 2px rgba(255, 255, 255, 0.6), inset -1px -1px 2px rgba(0,0,0,.2), inset 1px -1px 2px rgba(0,0,0,.2), inset -1px 1px 2px rgba(0,0,0,.2);
+}
+#decks img {
+}
+#decks > span span {
+	position: absolute;
+	display: block;
+	width: 100%;
+	height: 100%;
+	left: 0;
+	top: 0;
 }
 #croupie {
 	width: 122px;
@@ -338,18 +362,20 @@ input[type="radio"]:checked+label::before {
 	margin: auto;
 }
 #croupie_desk > div,
-.player_desk > div {
+.player_desk > .card {
 	display: inline-block;
 	height: 30px;
 	position: relative;
-	width: 12%;
 	min-width: 61.5px;
 }
-.player_desk > div {
+#croupie_desk > div {
+	width: 12%;
+}
+.player_desk > .card {
 	width: 30%;
 	min-width: 22px;
 }
-.player_desk > div .card {
+.player_desk > .card img {
 	left: calc( -65px + 100%/2 );
 }
 #player {
@@ -390,9 +416,7 @@ input[type="radio"]:checked+label::before {
 /**
  * CARD CLASS
  */
-.card {
-	background-image: url('../image/card.png');
-	background-repeat: no-repeat;
+.card > img {
 	border-radius: 5px;
 	border-top: 1px solid rgba(255,255,255,.5);
 	border-left: 1px solid rgba(255,255,255,.3);
@@ -405,7 +429,7 @@ input[type="radio"]:checked+label::before {
 	box-shadow: 4px 4px 6px rgba(18, 64, 3, 0.2), 1px 1px 3px 1px rgba(18, 64, 3, 0.3), -1px -1px 6px rgba(18, 64, 3, 0.15);
 	border: 1px solid rgba(144,144,144,0.3);
 }
-.card:hover {
+.card > img:hover {
 }
 .card.joker_0 {
 	background-position: -4px -741px;
