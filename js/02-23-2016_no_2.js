@@ -37,7 +37,7 @@
      * @param  {Number} countCard   [number of desk in the shoe]
      * @return {[type]}             [description]
      */
-     function cardDesk(numPlayer, countCard) {
+     function cardDesk(countCard) {
 
         /** [numberCards - number of cards in the deck]
          * @type {Number}
@@ -73,21 +73,23 @@
          */
          this.addCartShoe = function() {
             var q = 10+Number(countCard)*2;
-            while(--q > 0) {
-                $('#decks').append('<span><img src="" /><span></span></span>');
-            };
-            var spanInt = setInterval(function(){
-                if (q < $('#decks').children('span').length+1) {
-                    $('#decks>span').eq(q).children('img').attr('src', 'image/card_back.png');
-                    $('#decks>span').eq(q).animate({'left' : q+'px', 'top' : (q-q/2)+'px'});
-                    q++;
-                } else {
-                    clearInterval(spanInt);
-                    spanInt = -1;
-                }
-            }, 125);
-            $('#info').children().eq(0).children().eq(0).children('b').text(this.numberCards);
-         };
+            if(!$('#decks').children().length) {
+                while(--q > 0) {
+                    $('#decks').append('<span><img src="" /><span></span></span>');
+                };
+                var spanInt = setInterval(function(){
+                    if (q < $('#decks').children('span').length+1) {
+                        $('#decks>span').eq(q).children('img').attr('src', 'image/card_back.png');
+                        $('#decks>span').eq(q).animate({'left' : q+'px', 'top' : (q-q/2)+'px'});
+                        q++;
+                    } else {
+                        clearInterval(spanInt);
+                        spanInt = -1;
+                    }
+                }, 125);
+            }
+            return this.numberCards;
+        };
 
      }; // end object cardDesk
 
@@ -98,14 +100,21 @@
      */
      var numPlayers = 0;
 
+    /** [userBet - the total amount at stake]
+     * @type {Number}
+     */
+     var userBet;
+
     /** [playerS - data players]
      * @type {Object}
+     * @param  {Number} countPlayers [selection of players in game]
      */
-     function playerS(countPlayers) {
+     function playerS() {
         this.name = '';
         this.points = 0;
         this.bet = 0;
         this.balance = 100;
+        this.desk = 4;
 
         /** [userCart - player cards]
          * @type {Array}
@@ -126,13 +135,12 @@
             var currentBalance = this.balance;
             setTimeout(function() {
                 $('#popup').children('form').children('.form').children('p').remove();
-                $('#popup').children('form').children('.form').prepend('<p><span>Your Balance:<i>$ ' + currentBalance + '</i></span><label for="numberbet">Enter Your Bet :</label></p><p class="text"><input type="text" name="numberbet" value="10"></p>');
+                $('#popup').children('form').children('.form').prepend('<p class="bet"><span>Your Balance:<i>$ ' + currentBalance + '</i></span><label for="numberbet">Enter Your Bet:</label></p><p class="text"><input type="text" name="numberbet" value="10"></p><p class="titledesk"><label for="numbertable">Select desk:</label></p><p class="numberdesk"><span><input id="desk1" type="radio" name="numbertable" value="1"><label for="desk1">I</label></span><span><input id="desk2" type="radio" name="numbertable" value="2"><label for="desk2">II</label></span><span><input id="desk3" type="radio" name="numbertable" value="3"><label for="desk3">III</label></span><span><input id="desk4" type="radio" name="numbertable" value="4" checked><label for="desk4">IV</label></span><span><input id="desk5" type="radio" name="numbertable" value="5"><label for="desk5">V</label></span><span><input id="desk6" type="radio" name="numbertable" value="6"><label for="desk6">VI</label></span><span><input id="desk7" type="radio" name="numbertable" value="7"><label for="desk7">VII</label></span></p>');
                 $('#popup').children('form').children('.form').fadeIn('slow');
             }, 500);
          };
 
-        /**
-         * [correctBet - validation enter value]
+        /** [correctBet - validation enter value]
          * @type {Function}
          * @return {Number} [player Bet or player balance]
          */
@@ -140,7 +148,7 @@
             event.preventDefault();
             if(this.balance > 0) {
                 this.playerBet = $('#popup').find('input[name="numberbet"]').val();
-                console.log(this.playerBet);
+                $('#popup').find('.text').children('span').remove();
                 if(!isNaN(this.playerBet) && this.playerBet > 0 && this.playerBet <= 25) {
                     if(this.playerBet >= this.balance && this.balance <= 25) {
                         $('#popup').find('input[name="numberbet"]').val(this.balance);
@@ -151,18 +159,15 @@
                     }
                 } else {
                     if(this.balance <= 25) {
-                        $('#popup').find('.text').append('<span>Summ incorrect. Enter<br>from 1 to ' + this.balance + '</span>');
-                        $('#popup').find('input[name="numberbet"]').val(this.balance);
+                        $('#popup').find('.text').append('<span style="display:none;">Incorrect<br>Enter<br>from 1 to ' + this.balance + '</span>');
                     } else if(this.playerBet >= 25 && this.playerBet <= this.balance) {
-                        $('#popup').find('.text').append('<span>Summ incorrect. Enter<br>from 1 to 25</span>');
-                        $('#popup').find('input[name="numberbet"]').val(25);
+                        $('#popup').find('.text').append('<span style="display:none;">Incorrect<br>Enter<br>from 1 to 25</span>');
                     } else if(this.playerBet <= 0) {
-                        $('#popup').find('.text').append('<span>Summ incorrect. Enter<br>from 1 to 25</span>');
-                        $('#popup').find('input[name="numberbet"]').val(1);
+                        $('#popup').find('.text').append('<span style="display:none;">Incorrect<br>Enter<br>from 1 to 25</span>');
                     } else {
-                        $('#popup').find('.text').append('<span>Summ incorrect. Enter<br>from 1 to 25</span>');
-                        $('#popup').find('input[name="numberbet"]').val(25);
+                        $('#popup').find('.text').append('<span style="display:none;">Incorrect<br>Enter<br>from 1 to 25</span>');
                     }
+                    $('#popup').find('.text').children('span').fadeToggle('fast');
                     return false;
                 }
                 this.balance -= this.playerBet;
@@ -179,50 +184,62 @@
          this.closeBetForm = function() {
             event.preventDefault();
             $('#popup').fadeOut('slow', 'linear');
-            $('#info').children().eq(0).children().eq(2).children('b').text(this.playerBet);
          }
      } // object playerS END
 
-    /** [showsPlayersBet - it shows the player's bet (chips image)]
+    /** [virtualPlayers - it shows the player's bet (chips image)]
      * @type {Object}
-     * @param  {Number} countBet [selection of the betting of players]
+     * @param  {Number} userBet [selection of betting of players]
+     * @param  {Number} countPlayers [selection of players in game]
      */
-     function showsPlayersBet(countBet) {
-        this.realBett = countBet;
-        this.remainder = this.realBett%10;
-        this.visualBett = '';
+     function virtualPlayers(countPlayers, userBet) {
+        this.virtualPlayers = countPlayers-1;
+        this.realBett = userBet;
+        // this.remainder = this.realBett%10;
+        // this.visualBett = '';
 
-        if(this.remainder === 0) {
-            for (var i = this.realBett/10; i > 0; i--) {
-                this.visualBett += '<span><span class="bett_10"></span></span>';
-            };
-        } else {
-            if(this.remainder%5 == 0 && this.realBett != 25) {
-                this.visualBett += '<span><span class="bett_5"></span></span>';
-                for (var i = (this.realBett-this.remainder)/10; i > 0; i--) {
+        /** [playerGenerate - virtual player generated]
+         * @type {Object}
+         */
+        this.playerGenerate = function() {
+        };
+
+        /** [visualBett - visualization bet of players]
+         * @type {Object}
+         */
+        this.visualBett = function() {
+            if(this.remainder === 0) {
+                for (var i = this.realBett/10; i > 0; i--) {
                     this.visualBett += '<span><span class="bett_10"></span></span>';
                 };
-            } else if(this.realBett == 25) {
-                this.visualBett += '<span><span class="bett_25"></span></span>';
             } else {
-                if(this.remainder%5%2) {
-                    this.visualBett += '<span><span class="bett_1"></span></span>';
-                    if(this.remainder%5%3 == 0) {
-                        this.visualBett += '<span><span class="bett_2"></span></span>';
-                    };
-                } else {
-                    if(this.remainder%5%3) {
-                        for (var i = this.realBett%10%5/2; i > 0; i--) {
-                            this.visualBett += '<span><span class="bett_2"></span></span>';
-                        };
-                    };
-                };
-                if(this.remainder > 5) {
+                if(this.remainder%5 == 0 && this.realBett != 25) {
                     this.visualBett += '<span><span class="bett_5"></span></span>';
-                };
-                if((this.realBett-this.remainder)%10 == 0) {
                     for (var i = (this.realBett-this.remainder)/10; i > 0; i--) {
                         this.visualBett += '<span><span class="bett_10"></span></span>';
+                    };
+                } else if(this.realBett == 25) {
+                    this.visualBett += '<span><span class="bett_25"></span></span>';
+                } else {
+                    if(this.remainder%5%2) {
+                        this.visualBett += '<span><span class="bett_1"></span></span>';
+                        if(this.remainder%5%3 == 0) {
+                            this.visualBett += '<span><span class="bett_2"></span></span>';
+                        };
+                    } else {
+                        if(this.remainder%5%3) {
+                            for (var i = this.realBett%10%5/2; i > 0; i--) {
+                                this.visualBett += '<span><span class="bett_2"></span></span>';
+                            };
+                        };
+                    };
+                    if(this.remainder > 5) {
+                        this.visualBett += '<span><span class="bett_5"></span></span>';
+                    };
+                    if((this.realBett-this.remainder)%10 == 0) {
+                        for (var i = (this.realBett-this.remainder)/10; i > 0; i--) {
+                            this.visualBett += '<span><span class="bett_10"></span></span>';
+                        };
                     };
                 };
             };
@@ -246,7 +263,7 @@
     /** [totalBet - the total amount at stake]
      * @type {Number}
      */
-     var totalBet;
+     var totalBets;
 
     /** [gameTotalSetup - initial game settings]
      * @type {Object}
@@ -281,25 +298,23 @@
         /** [animateInfo - animating output information]
          * @type {Function}
          */
-         this.animateInfo = function() {
-            $('#info').children().children().children('b').each(function () {
-                $(this).prop('Counter',0).animate({
-                    Counter: $(this).text()
-                }, {
-                    duration: $('#decks').children('span').length*135,
-                    easing: 'swing',
-                    step: function (now) {
-                            $(this).text(Math.ceil(now));
-                        }
+         this.animateInfo = function(numCard, numPlayer, totalBet) {
+            setTimeout(function() {
+                $('#info').children().eq(0).children().eq(0).children('b').text(numCard);
+                $('#info').children().eq(0).children().eq(1).children('b').text(numPlayer);
+                $('#info').children().eq(0).children().eq(2).children('b').text(totalBet);
+                $('#info').children().children().children('b').each(function () {
+                    $(this).prop('Counter',0).animate({
+                        Counter: $(this).text()
+                    }, {
+                        duration: $('#decks').children('span').length*135,
+                        easing: 'swing',
+                        step: function (now) {
+                                $(this).text(Math.ceil(now));
+                            }
+                        });
                     });
-                });
-         };
-
-        /** [tableGenerate - create value for info box]
-         * @type {Function}
-         */
-         this.tableGenerate = function(countPlayers) {
-            $('#info').children().eq(0).children().eq(1).children('b').text(countPlayers);
+            },100);
          };
      };
 
@@ -328,29 +343,36 @@ window.onload = function() {
             }
 
             /* second step :: generated PopUp II */
-            if(totalBet === undefined) {
+            if(userBet === undefined) {
                 newPlayerS.userBet();
-                totalBet = false;
+                userBet = false;
             }
 
             $('form').submit(function() {
 
-                totalBet = newPlayerS.correctBet();
+                userBet = newPlayerS.correctBet();
+                newPlayerS.desk = $('#popup').find('input[name="numbertable"]:checked').val();
 
-                if(totalBet <= 0 && totalBet) {
+                if(userBet <= 0 && userBet) {
                     setupGame.gameOver();
-                } else if(totalBet > 0) {
+                } else if(userBet > 0) {
 
-                    /* third step :: generated game space */
-                    var newCardDesk = new cardDesk(numPlayers, numDecks);
-                    newCardDesk.addCartShoe(); // 3.1, 3.2
-                    setupGame.tableGenerate(numPlayers); // 3.3
-                    // 3.4
-                    // 3.5
-                    // 3.6
-                    // 3.7
+                    /* third step :: generated virtual players */
+
+                    if(numPlayers > 1) {
+                        console.log(numPlayers);
+                        var allVirtualPlayers = new virtualPlayers(numPlayers, userBet);
+                    }
+
+                    /* fourth step :: generated game information */
+                    var newCardDesk = new cardDesk(numDecks);
+                    var numCards = newCardDesk.addCartShoe(); // 4.1
+                    var totalBets = userBet; // 4.4
                     newPlayerS.closeBetForm();
-                    setupGame.animateInfo();
+                    setupGame.animateInfo(numCards, numPlayers, totalBets); // 4.2, 4.3
+                    // 4.5
+                    // 4.6
+                    // 4.7
 
                 }
 
@@ -368,6 +390,7 @@ window.onload = function() {
                  } else {
 
                     var x = (numPlayers < 7) ? Math.floor((7-numPlayers)/2) : 0;
+
                     for (var i = x; i < numPlayers+x; i++) {
                         $('#player_'+(i+1)).fadeTo(1000, 1, function() {
                             var childCount = $(this).children('.bett').children().length;

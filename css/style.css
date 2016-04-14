@@ -85,31 +85,6 @@ body > div {
 .form p:nth-child(even) {
 	text-align: left;
 }
-.form p.text {
-	text-align: center;
-	position: relative;
-}
-.form p.text:before {
-	content: '$';
-	font-size: 33px;
-	background: #007314;
-	color: #00AE14;
-	display: inline-block;
-	line-height: 48px;
-	border-bottom-left-radius: 10px;
-	border-top-left-radius: 10px;
-	padding-left: 15px;
-}
-.form p.text span {
-	position: absolute;
-	font-size: 10px;
-	width: 87px;
-	right: 0;
-	background: #007314;
-	top: 15px;
-	color: #00AE14;
-	padding: 1px 0;
-}
 .form p > label {
 	display: block;
 	font-weight: bold;
@@ -141,6 +116,51 @@ body > div {
 	font-size: 20px;
 	padding: 5px;
 }
+.form p.bet {
+	margin: 0;
+}
+.form p.bet span {
+	margin-bottom: 5px;
+	line-height: 10px;
+}
+.form p.titledesk {
+	margin-bottom: 5px;
+	margin-top: 2px;
+}
+.form p.numberdesk {
+	text-align: center;
+	margin-bottom: 10px;
+}
+.form p.numberdesk span {
+	width: 48px;
+}
+.form p.text {
+	text-align: center;
+	margin: 0;
+	position: relative;
+}
+.form p.text:before {
+	content: '$';
+	font-size: 33px;
+	background: #007314;
+	color: #00AE14;
+	display: inline-block;
+	line-height: 48px;
+	border-bottom-left-radius: 10px;
+	border-top-left-radius: 10px;
+	padding-left: 15px;
+}
+.form p.text span {
+	position: absolute;
+	font-size: 10px;
+	width: 82px;
+	right: 0;
+	background: #007314;
+	top: 10px;
+	color: #00AE14;
+	padding: 7px 4px;
+	border-radius: 5px;
+}
 input[type="text"] {
 	width: 80px;
 	background: #00AE14;
@@ -148,7 +168,7 @@ input[type="text"] {
 	text-align: center;
 	font-size: 33px;
 	font-weight: bold;
-	margin: 14px auto;
+	margin: 10px auto;
 	padding: 1px 15px;
 	border-bottom-right-radius: 10px;
 	border-top-right-radius: 10px;
