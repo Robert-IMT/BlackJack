@@ -32,12 +32,13 @@
         'spades'    : [2,3,4,5,6,7,8,9,10,'J','Q','K','A']  // ♠
      };
 
-    /** [cardDesk - game card deck]
+    /** [cardDeck - game card deck]
      * @type {Object}
-     * @param  {Number} countCard   [number of desk in the shoe]
+     * @param  {Number} countCard   [number of deck in the shoe]
      * @return {[type]}             [description]
      */
-     function cardDesk(countCard) {
+     function cardDeck(countCard) {
+         this.countDecks = countCard;
 
         /** [numberCards - number of cards in the deck]
          * @type {Number}
@@ -52,21 +53,20 @@
          this.positionJoker = this.numberCards*(66+Math.random()*(75+1-66))/100;
          this.positionJoker = Math.floor(this.positionJoker);
 
-        /** [playingDesk - card in the shoe]
+        /** [playingDeck - card in the shoe]
          * @type {Array}
          */
-         this.countDesks = countCard;
-         this.playingDesk = {
+         this.playingDeck = {
              'hearts'    : [],
              'diamonds'  : [],
              'clubs'     : [],
              'spades'    : []
           };
-         while(this.countDesks-- > 0) {
+         while(this.countDecks-- > 0) {
              for(var key in cardsBase)
-                 this.playingDesk[key] = this.playingDesk[key].concat(cardsBase[key]);
+                 this.playingDeck[key] = this.playingDeck[key].concat(cardsBase[key]);
          };
-         this.playingDesk['joker'] = [0,1];
+         this.playingDeck['joker'] = [0,1];
 
         /** [addCartShoe - add visual card to shoe]
          * @type {Function}
@@ -85,13 +85,13 @@
                     } else {
                         clearInterval(spanInt);
                         spanInt = -1;
-                    }
+                    };
                 }, 125);
-            }
+            };
             return this.numberCards;
         };
 
-     }; // end object cardDesk
+     }; // end object cardDeck
 
 /** PLAYERS **/
 
@@ -147,7 +147,11 @@
          this.correctBet = function() {
             event.preventDefault();
             if(this.balance > 0) {
-                this.playerBet = $('#popup').find('input[name="numberbet"]').val();
+                if((this.playerBet ^ 0) === this.playerBet) {
+                    this.playerBet = $('#popup').find('input[name="numberbet"]').val();
+                } else {
+                    this.playerBet = Math.ceil($('#popup').find('input[name="numberbet"]').val());
+                };
                 $('#popup').find('.text').children('span').remove();
                 if(!isNaN(this.playerBet) && this.playerBet > 0 && this.playerBet <= 25) {
                     if(this.playerBet >= this.balance && this.balance <= 25) {
@@ -156,7 +160,7 @@
                     } else if(this.playerBet >= this.balance && this.balance >= 25) {
                         $('#popup').find('input[name="numberbet"]').val(25);
                         this.playerBet = 25;
-                    }
+                    };
                 } else {
                     if(this.balance <= 25) {
                         $('#popup').find('.text').append('<span style="display:none;">Incorrect<br>Enter<br>from 1 to ' + this.balance + '</span>');
@@ -166,17 +170,16 @@
                         $('#popup').find('.text').append('<span style="display:none;">Incorrect<br>Enter<br>from 1 to 25</span>');
                     } else {
                         $('#popup').find('.text').append('<span style="display:none;">Incorrect<br>Enter<br>from 1 to 25</span>');
-                    }
+                    };
                     $('#popup').find('.text').children('span').fadeToggle('fast');
                     return false;
-                }
+                };
                 this.balance -= this.playerBet;
                 return this.playerBet;
             } else {
-                this.balance -= this.playerBet;
                 return this.balance;
-            }
-         }
+            };
+         };
 
         /** [closeBetForm - processing the second form]
          * @type {Function}
@@ -184,7 +187,7 @@
          this.closeBetForm = function() {
             event.preventDefault();
             $('#popup').fadeOut('slow', 'linear');
-         }
+         };
      } // object playerS END
 
     /** [virtualPlayers - it shows the player's bet (chips image)]
@@ -192,60 +195,122 @@
      * @param  {Number} userBet [selection of betting of players]
      * @param  {Number} countPlayers [selection of players in game]
      */
-     function virtualPlayers(countPlayers, userBet) {
-        this.virtualPlayers = countPlayers-1;
-        this.realBett = userBet;
-        // this.remainder = this.realBett%10;
-        // this.visualBett = '';
+     function virtualPlayers(countPlayers, userBet, userDesk) {
+        this.virtualPlayers = countPlayers-1; // number of virtual players
+        this.realBett = Number(userBet); // real player bet
+        this.realDesk = Number(userDesk); // real player table
+        this.arrayVirtualPlayer = [ // generate array virtual player
+                {'status' : false,'bet' : 0, 'balance' : 100},
+                {'status' : false,'bet' : 0, 'balance' : 100},
+                {'status' : false,'bet' : 0, 'balance' : 100},
+                {'status' : false,'bet' : 0, 'balance' : 100},
+                {'status' : false,'bet' : 0, 'balance' : 100},
+                {'status' : false,'bet' : 0, 'balance' : 100},
+                {'status' : false,'bet' : 0, 'balance' : 100}
+            ];
+        this.arrayVirtualPlayer[this.realDesk-1] = { // add array real player
+                'status' : true,
+                'bet' : this.realBett,
+                'balance' : this.arrayVirtualPlayer[this.realDesk-1].balance-this.realBett
+            };
 
         /** [playerGenerate - virtual player generated]
          * @type {Object}
+         * @return {Array} [all player data]
          */
-        this.playerGenerate = function() {
-        };
+         this.playerGenerate = function() {
+            this.i = this.virtualPlayers-1;
+            while(this.i >= 0) {
+                this.rand = 1 - 0.5 + Math.random() * (this.virtualPlayers - 1 + 1);
+                this.rand = Math.round(this.rand);
+                this.bet = 1 - 0.5 + Math.random() * (25 - 1 + 1);
+                this.bet = Math.round(this.bet);
+                if(this.rand !== this.realDesk-1){
+                    if(!this.arrayVirtualPlayer[this.rand].status) {
+                        this.bet = (this.bet > this.arrayVirtualPlayer[this.rand].balance) ? this.arrayVirtualPlayer[this.rand].balance : this.bet;
+                        this.arrayVirtualPlayer[this.rand] = {
+                                'status' : (this.arrayVirtualPlayer[this.rand].balance > 0) ? true : false,
+                                'bet' : this.bet,
+                                'balance' : this.arrayVirtualPlayer[this.rand].balance-this.bet
+                            };
+                    } else {
+                        this.j = 6;
+                        while(this.j >= 0) {
+                            if(!this.arrayVirtualPlayer[this.j].status) {
+                                this.bet = (this.bet > this.arrayVirtualPlayer[this.j].balance) ? this.arrayVirtualPlayer[this.j].balance : this.bet;
+                                this.arrayVirtualPlayer[this.j] = {
+                                        'status' : (this.arrayVirtualPlayer[this.j].balance > 0) ? true : false,
+                                        'bet' : this.bet,
+                                        'balance' : this.arrayVirtualPlayer[this.j].balance-this.bet
+                                    };
+                                break;
+                            };
+                            this.j--;
+                        };
+                    };
+                    this.i--;
+                };
+            };
+            return this.arrayVirtualPlayer;
+         };
 
-        /** [visualBett - visualization bet of players]
+        /** [visualPlayerBett - visualization bet of players]
          * @type {Object}
          */
-        this.visualBett = function() {
-            if(this.remainder === 0) {
-                for (var i = this.realBett/10; i > 0; i--) {
-                    this.visualBett += '<span><span class="bett_10"></span></span>';
-                };
-            } else {
-                if(this.remainder%5 == 0 && this.realBett != 25) {
-                    this.visualBett += '<span><span class="bett_5"></span></span>';
-                    for (var i = (this.realBett-this.remainder)/10; i > 0; i--) {
-                        this.visualBett += '<span><span class="bett_10"></span></span>';
-                    };
-                } else if(this.realBett == 25) {
-                    this.visualBett += '<span><span class="bett_25"></span></span>';
-                } else {
-                    if(this.remainder%5%2) {
-                        this.visualBett += '<span><span class="bett_1"></span></span>';
-                        if(this.remainder%5%3 == 0) {
-                            this.visualBett += '<span><span class="bett_2"></span></span>';
+         this.visualPlayerBett = function() {
+            while(++this.i < this.arrayVirtualPlayer.length) {
+                if(this.arrayVirtualPlayer[this.i].status == true) {
+                    this.virtualBett = this.arrayVirtualPlayer[this.i].bet;
+                    this.remainder = this.virtualBett%10;
+                    this.visualBett = '';
+                    $('#player_'+this.i).css({'opacity' : 1});
+                    $('#player_'+this.i).find('.bet').children('strong').text(this.virtualBett);
+
+                    // visual range
+                    if(this.remainder === 0) {
+                        for (var i = this.virtualBett/10; i > 0; i--) {
+                            this.visualBett += '<span><span class="bett_10"></span></span>';
                         };
                     } else {
-                        if(this.remainder%5%3) {
-                            for (var i = this.realBett%10%5/2; i > 0; i--) {
-                                this.visualBett += '<span><span class="bett_2"></span></span>';
+                        if(this.remainder%5 == 0 && this.virtualBett != 25) {
+                            this.visualBett += '<span><span class="bett_5"></span></span>';
+                            for (var i = (this.virtualBett-this.remainder)/10; i > 0; i--) {
+                                this.visualBett += '<span><span class="bett_10"></span></span>';
+                            };
+                        } else if(this.virtualBett == 25) {
+                            this.visualBett += '<span><span class="bett_25"></span></span>';
+                        } else {
+                            if(this.remainder%5%2) {
+                                this.visualBett += '<span><span class="bett_1"></span></span>';
+                                if(this.remainder%5%3 == 0) {
+                                    this.visualBett += '<span><span class="bett_2"></span></span>';
+                                };
+                            } else {
+                                if(this.remainder%5%3) {
+                                    for (var i = this.virtualBett%10%5/2; i > 0; i--) {
+                                        this.visualBett += '<span><span class="bett_2"></span></span>';
+                                    };
+                                };
+                            };
+                            if(this.remainder > 5) {
+                                this.visualBett += '<span><span class="bett_5"></span></span>';
+                            };
+                            if((this.virtualBett-this.remainder)%10 == 0) {
+                                for (var i = (this.virtualBett-this.remainder)/10; i > 0; i--) {
+                                    this.visualBett += '<span><span class="bett_10"></span></span>';
+                                };
                             };
                         };
                     };
-                    if(this.remainder > 5) {
-                        this.visualBett += '<span><span class="bett_5"></span></span>';
-                    };
-                    if((this.realBett-this.remainder)%10 == 0) {
-                        for (var i = (this.realBett-this.remainder)/10; i > 0; i--) {
-                            this.visualBett += '<span><span class="bett_10"></span></span>';
-                        };
-                    };
-                };
-            };
-        };
+                    this.visualBett += '';
+                    $('#player_'+this.i).children('.bett').append(this.visualBett);
+                    // $('#player_'+this.i).children('.bett').children('span').css({'position' : 'relative'});
 
-        this.visualBett += '';
+                };
+                $('#player_'+this.i).find('.balance').children('strong').text(this.arrayVirtualPlayer[this.i].balance);
+            };
+         };
+
      };
 
 /** GAME SETUP **/
@@ -295,10 +360,10 @@
             return this.arr;
          };
 
-        /** [animateInfo - animating output information]
+        /** [animateInfoBox - animating output information]
          * @type {Function}
          */
-         this.animateInfo = function(numCard, numPlayer, totalBet) {
+         this.animateInfoBox = function(numCard, numPlayer, totalBet) {
             setTimeout(function() {
                 $('#info').children().eq(0).children().eq(0).children('b').text(numCard);
                 $('#info').children().eq(0).children().eq(1).children('b').text(numPlayer);
@@ -340,13 +405,13 @@ window.onload = function() {
             if(numDecks === 0 && numPlayers === 0) {
                 numDecks = setupGame.gameContinue()[0];
                 numPlayers = setupGame.gameContinue()[1];
-            }
+            };
 
             /* second step :: generated PopUp II */
             if(userBet === undefined) {
                 newPlayerS.userBet();
                 userBet = false;
-            }
+            };
 
             $('form').submit(function() {
 
@@ -360,86 +425,24 @@ window.onload = function() {
                     /* third step :: generated virtual players */
 
                     if(numPlayers > 1) {
-                        console.log(numPlayers);
-                        var allVirtualPlayers = new virtualPlayers(numPlayers, userBet);
-                    }
+                        var allVirtualPlayers = new virtualPlayers(numPlayers, userBet, newPlayerS.desk);
+                        if(virtualPlayerArray === undefined) {
+                            var virtualPlayerArray = allVirtualPlayers.playerGenerate();
+                        };
+                        allVirtualPlayers.visualPlayerBett();
+                    };
 
                     /* fourth step :: generated game information */
-                    var newCardDesk = new cardDesk(numDecks);
-                    var numCards = newCardDesk.addCartShoe(); // 4.1
+                    var newCardDeck = new cardDeck(numDecks);
+                    var numCards = newCardDeck.addCartShoe(); // 4.1
                     var totalBets = userBet; // 4.4
                     newPlayerS.closeBetForm();
-                    setupGame.animateInfo(numCards, numPlayers, totalBets); // 4.2, 4.3
+                    setupGame.animateInfoBox(numCards, numPlayers, totalBets); // 4.2, 4.3
                     // 4.5
                     // 4.6
                     // 4.7
 
-                }
-
-                /**
-                 * [bettPlayers - selection of the betting of players]
-                 * @type {Number}
-                 */
-                 /*var bettPlayers = prompt('Enter Your betting\n($1 to $25)', 10);
-                 while(!isNaN(bettPlayers) && bettPlayers !== null && (Number(bettPlayers) < 1 || Number(bettPlayers) > 25)) {
-                    alert(error);
-                    bettPlayers = prompt('Enter the correct Your betting\n($1 to $25)', 10);
-                 };
-                 if (bettPlayers === null) {
-                    alert(canceled);
-                 } else {
-
-                    var x = (numPlayers < 7) ? Math.floor((7-numPlayers)/2) : 0;
-
-                    for (var i = x; i < numPlayers+x; i++) {
-                        $('#player_'+(i+1)).fadeTo(1000, 1, function() {
-                            var childCount = $(this).children('.bett').children().length;
-                            var childPos = 100/childCount;
-
-                            for (var j = 0; j < childCount; j++) {
-                                $(this).children('.bett').children().eq(j).css('left', (childPos*j) + '%');
-                            };
-
-                        });
-
-                        if(i !== 3) {
-                            var playersBet = Math.floor(Math.random()*25)+1;
-                            totalBet += playersBet;
-                            var betts = new showsPlayersBet(playersBet);
-
-                            $('#player_'+(i+1)).children('.bett').html(betts.visualBett);
-                            $('#player_'+(i+1)).children('.player').children('i').eq(1).children('strong').html(playersBet);
-                            $('#player_'+(i+1)).children('.player').children('i').eq(2).children('strong').html(Number(amountMoney)-Number(playersBet));
-
-                        } else {
-                            $('#player_'+(i+1)).children('.player').children('b').html('YOUR DESK');
-                            var bettsYou = new showsPlayersBet(bettPlayers);
-
-                            $('#player_'+(i+1)).children('.bett').html(bettsYou.visualBett);
-                            $('#player_'+(i+1)).children('.player').children('i').eq(1).children('strong').html(Number(bettPlayers));
-                            $('#player_'+(i+1)).children('.player').children('i').eq(2).children('strong').html(Number(amountMoney)-Number(bettPlayers));
-                        };
-                    };
-
-                    $('#info').children().eq(0).children().eq(0).children('b').html(numDecks*52);
-                    $('#info').children().eq(0).children().eq(1).children('b').html(numPlayers);
-                    $('#info').children().eq(0).children().eq(2).children('b').html(Number(bettPlayers)+totalBet);
-
-                    $('#info').children().children().children('b').each(function () {
-                            $(this).prop('Counter',0).animate({
-                                Counter: $(this).text()
-                        }, {
-                                duration: 4000,
-                                easing: 'swing',
-                                step: function (now) {
-                                    $(this).text(Math.ceil(now));
-                                }
-                            });
-                        });
-                 };
-
-                // newGame = prompt('Next game?', 1);
-                */
+                };
 
             });
 
