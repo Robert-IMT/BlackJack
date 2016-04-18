@@ -258,9 +258,11 @@
          * @type {Object}
          */
          this.visualPlayerBett = function() {
+            this.allBet = 0;
             while(++this.i < this.arrayVirtualPlayer.length) {
                 if(this.arrayVirtualPlayer[this.i].status == true) {
                     this.virtualBett = this.arrayVirtualPlayer[this.i].bet;
+                    this.allBet += this.virtualBett;
                     this.remainder = this.virtualBett%10;
                     this.visualBett = '';
                     $('#player_'+this.i).css({'opacity' : 1});
@@ -304,11 +306,14 @@
                     };
                     this.visualBett += '';
                     $('#player_'+this.i).children('.bett').append(this.visualBett);
-                    // $('#player_'+this.i).children('.bett').children('span').css({'position' : 'relative'});
-
+                    $('#player_'+this.i).children('.bett').animate({
+                            'top' : '-60px',
+                            'opacity' : 1
+                        },500);
                 };
                 $('#player_'+this.i).find('.balance').children('strong').text(this.arrayVirtualPlayer[this.i].balance);
             };
+            return this.allBet;
          };
 
      };
@@ -429,18 +434,14 @@ window.onload = function() {
                         if(virtualPlayerArray === undefined) {
                             var virtualPlayerArray = allVirtualPlayers.playerGenerate();
                         };
-                        allVirtualPlayers.visualPlayerBett();
+                        var totalBets = allVirtualPlayers.visualPlayerBett();  // 4.4, 4.5, 4.6
                     };
 
                     /* fourth step :: generated game information */
                     var newCardDeck = new cardDeck(numDecks);
                     var numCards = newCardDeck.addCartShoe(); // 4.1
-                    var totalBets = userBet; // 4.4
                     newPlayerS.closeBetForm();
-                    setupGame.animateInfoBox(numCards, numPlayers, totalBets); // 4.2, 4.3
-                    // 4.5
-                    // 4.6
-                    // 4.7
+                    setupGame.animateInfoBox(numCards, numPlayers, totalBets); // 4.2, 4.3, 4.7
 
                 };
 
